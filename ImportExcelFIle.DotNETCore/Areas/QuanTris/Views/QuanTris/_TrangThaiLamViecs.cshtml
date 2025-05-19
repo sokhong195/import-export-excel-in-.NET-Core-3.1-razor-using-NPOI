@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Model"] = "Trạng thái làm việc";
+    ViewData["Controller"] = "TrangThaiLamViecs";
+
+}
+<br />
+<div class="card mb-sm-3" style="min-width: 18rem;">
+    <h4 class="card-header" id="@ViewData["Controller"]">Bảng @ViewData["Model"]</h4>
+    <div class="card-body">
+        @Html.DropDownList("Id" + @ViewData["Controller"], null, htmlAttributes: new { @size = 25, @class = "form-control" })
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-primary text-white" onclick="showInPopup('@Url.Action("CreateOrEdit", ""+@ViewData["Controller"], 0, Context.Request.Scheme)','Thêm @ViewData["Model"] mới')"><i class="far fa-plus-square"> Thêm @ViewData["Model"]</i></a> |
+        <a class="btn btn-success text-white" onclick="showInPopupCheckList('@ViewData["Controller"]','@Url.Action("CreateOrEdit", ""+@ViewData["Controller"], null, Context.Request.Scheme)','Sửa @ViewData["Model"]')"><i class="far fa-edit"> Sửa @ViewData["Model"]</i> </a> |
+        <form asp-action="Delete" asp-controller="@ViewData["Controller"]" onsubmit="return jQueryAjaxDeleteCheckList('@ViewData["Controller"]',this,'Xác nhận muốn xóa @ViewData["Model"] này không?')" class="d-inline">
+            <button type="submit" class="btn btn-danger text-white"><i class="far fa-trash-alt">  Xóa @ViewData["Model"]</i></button>
+        </form>
+    </div>
+</div>

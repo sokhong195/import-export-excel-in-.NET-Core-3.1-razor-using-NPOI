@@ -1,0 +1,14 @@
+D:\huhuhu\TestFunction\bin\Debug\netcoreapp3.1\TestFunction.exe
+D:\huhuhu\TestFunction\bin\Debug\netcoreapp3.1\TestFunction.deps.json
+D:\huhuhu\TestFunction\bin\Debug\netcoreapp3.1\TestFunction.runtimeconfig.json
+D:\huhuhu\TestFunction\bin\Debug\netcoreapp3.1\TestFunction.runtimeconfig.dev.json
+D:\huhuhu\TestFunction\bin\Debug\netcoreapp3.1\TestFunction.dll
+D:\huhuhu\TestFunction\bin\Debug\netcoreapp3.1\TestFunction.pdb
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.csproj.AssemblyReference.cache
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.GeneratedMSBuildEditorConfig.editorconfig
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.AssemblyInfoInputs.cache
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.AssemblyInfo.cs
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.csproj.CoreCompileInputs.cache
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.dll
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.pdb
+D:\huhuhu\TestFunction\obj\Debug\netcoreapp3.1\TestFunction.genruntimeconfig.cache

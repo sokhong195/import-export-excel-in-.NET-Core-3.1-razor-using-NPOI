@@ -18,12 +18,18 @@ namespace ImportExcelFIle.DotNETCore.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly dbPhanCongThanhToanContext _context;
+
         private readonly ILogger<HomeController> _logger;
+        [Obsolete]
         private IHostingEnvironment _hostingEnvironment;
-        public HomeController(ILogger<HomeController> logger, IHostingEnvironment hostingEnvironment)
+
+        [Obsolete]
+        public HomeController(ILogger<HomeController> logger, IHostingEnvironment hostingEnvironment, dbPhanCongThanhToanContext context)
         {
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -31,7 +37,23 @@ namespace ImportExcelFIle.DotNETCore.Controllers
             return View();
         }
 
-      
+        [HttpPost]
+        public ActionResult CapNhatKhoa(Khoa khoa)
+        {
+            Khoa cKhoa = (from c in _context.Khoas
+                             where c.IdKhoa == khoa.IdKhoa
+                             select c).FirstOrDefault();
+            if (cKhoa != null)
+            {
+                cKhoa.TenKhoa = khoa.TenKhoa;
+                cKhoa.ThoiGianKetThuc = khoa.ThoiGianKetThuc;
+                cKhoa.ThoiGianBatDau = khoa.ThoiGianBatDau;
+                _context.SaveChanges();
+            }
+            return new EmptyResult();
+        }
+
+        [Obsolete]
         public ActionResult Import()
         {
             IFormFile file = Request.Form.Files[0];
@@ -91,11 +113,11 @@ namespace ImportExcelFIle.DotNETCore.Controllers
             return this.Content(sb.ToString());
         }
 
+        [Obsolete]
         public async Task<IActionResult> Export()
         {
             string sWebRootFolder = _hostingEnvironment.WebRootPath;
             string sFileName = @"Employees.xlsx";
-            string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, sFileName);
             FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
             var memory = new MemoryStream();
             using (var fs = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Create, FileAccess.Write))
@@ -117,7 +139,7 @@ namespace ImportExcelFIle.DotNETCore.Controllers
                 row.CreateCell(2).SetCellValue(45);
                 row.CreateCell(3).SetCellValue("Male");
                 row.CreateCell(4).SetCellValue("Solution Architect");
-
+                
                 row = excelSheet.CreateRow(2);
                 row.CreateCell(0).SetCellValue(2);
                 row.CreateCell(1).SetCellValue("Steve khan");
@@ -131,7 +153,7 @@ namespace ImportExcelFIle.DotNETCore.Controllers
                 row.CreateCell(2).SetCellValue(25);
                 row.CreateCell(3).SetCellValue("FeMale");
                 row.CreateCell(4).SetCellValue("Junior Consultant");
-
+               
                 row = excelSheet.CreateRow(4);
                 row.CreateCell(0).SetCellValue(4);
                 row.CreateCell(1).SetCellValue("Hider Ali");

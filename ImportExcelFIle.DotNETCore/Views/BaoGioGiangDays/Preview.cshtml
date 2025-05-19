@@ -1,0 +1,194 @@
+﻿@model IEnumerable<ImportExcelFIle.DotNETCore.ModelViews.ViewBaoGioGiangDayChiTiet>
+
+@{
+    ViewData["Title"] = "Tạo báo giờ giảng dạy";
+    ImportExcelFIle.DotNETCore.Models.BaoGioGiangDay BaoGioGiangDay = (ImportExcelFIle.DotNETCore.Models.BaoGioGiangDay)ViewBag.BaoGioGiangDay;
+}
+<h1>Tạo báo giờ</h1>
+
+<hr />
+<form asp-action="Preview" method="get">
+    <div class="card">
+        <div class="card-header bg-success text-uppercase text-white" style="height:45px">
+            <h4>Thông tin báo giờ</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.TenPhanCongGiangDay" class="control-label"></label>
+                        <input asp-for="@BaoGioGiangDay.TenPhanCongGiangDay" class="form-control"/>
+                        <span asp-validation-for="@BaoGioGiangDay.TenPhanCongGiangDay" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Học kỳ Năm học:</label>
+                        <select class="form-control" asp-for="@BaoGioGiangDay.IdNamHocHocKy" asp-items="ViewBag.IdNamHocHocKy" >
+                            <option value="0">Hãy chọn học kỳ</option>
+                        </select>
+                        <span asp-validation-for="@BaoGioGiangDay.IdNamHocHocKy" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.TenTepBaoGio" class="control-label"></label>
+                        <input asp-for="@BaoGioGiangDay.TenTepBaoGio" class="form-control" readonly/>
+                        <span asp-validation-for="@BaoGioGiangDay.TenTepBaoGio" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.ThoiGianBatDau" class="control-label"></label>
+                        <input asp-for="@BaoGioGiangDay.ThoiGianBatDau" class="form-control" />
+                        <span asp-validation-for="@BaoGioGiangDay.ThoiGianBatDau" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.ThoiGianKetThuc" class="control-label"></label>
+                        <input asp-for="@BaoGioGiangDay.ThoiGianKetThuc" class="form-control" />
+                        <span asp-validation-for="@BaoGioGiangDay.ThoiGianKetThuc" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+            </div>
+            </div>
+        </div>
+                    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+                    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            <button class="btn @(ViewData["Filtering"])" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                                Lọc & Tìm kiếm
+                            </button>
+                        </dt>
+                        <dd>
+                            <div class="form-horizontal">
+                                <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilter">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4 ml-md-3">
+                                            <label class="control-label">Khoa:</label>
+                                            <select id="IdKhoa" name="IdKhoa" class="form-control" asp-items="ViewBag.IdKhoa"></select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="control-label">Tên học phần:</label>
+                                            @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-md-3 align-self-end">
+                                            <input type="submit" name="actionButton" value="Lọc" class="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </dd>
+                        <dd>
+                            <div>
+                                <table class="table">
+                                    <tr>
+                                        <th>
+                                            <label class="control-label">STT</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Mã học phần</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Tên lớp học phần</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Số tín chỉ</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Sĩ số</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Số tiết</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Số nhóm</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Số tiết học và nhóm</label>
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Hướng dẫn tự học</label>
+                                        </th>
+                                        <th>
+                                            <input type="submit" name="actionButton" value="IdKhoa" class="btn btn-link" />
+                                        </th>
+                                        <th>
+                                            <label class="control-label">Ghi chú</label>
+                                        </th>                                        
+                                    </tr>
+                                    @{
+                                        var i = 1;
+                                    }
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label>@i</label>
+                                            </td>
+                                            @{
+                                                i += 1;
+                                            }
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.MaHocPhan)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TenLopHocPhan)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SoTinChi)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SiSo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SoTietLyThuyet)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SoNhom)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.SoTietThaoLuanThiNghiemThucHanh)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.HuongDanTuHoc)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IdKhoa)
+                                            </td>                                           
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.GhiChu)
+                                            </td>
+                                          
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td></td>
+                                        <td align="right">
+                                            Tổng số lớp:
+                                        </td>
+                                        <td>
+                                            <strong>@ViewData["SoMon"]</strong>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </dd>
+                    </dl>
+                    <partial name="_PagingNavBar" />
+                    <div class="row">
+                        <a class="btn btn-info" asp-controller="Trainning" asp-action="Index" asp-route-Tab="BaoGioGiangDaysTab">Quay lại</a>
+                        &nbsp;&nbsp; <button type="submit" id="TaiBaoGio" asp-action="Save" class="btn btn-primary">Lưu báo giờ</button>
+                    </div>
+            </form>

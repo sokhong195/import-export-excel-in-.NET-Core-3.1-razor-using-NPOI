@@ -1,0 +1,51 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.PhanCongGiangDay
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PhanCongGiangDay</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdPhanCongGiangDay" />
+            <div class="form-group">
+                <label asp-for="IdBaoGioGiangDayChiTiet" class="control-label"></label>
+                <select asp-for="IdBaoGioGiangDayChiTiet" class="form-control" asp-items="ViewBag.IdBaoGioGiangDayChiTiet"></select>
+                <span asp-validation-for="IdBaoGioGiangDayChiTiet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdGiaoVien" class="control-label"></label>
+                <select asp-for="IdGiaoVien" class="form-control" asp-items="ViewBag.IdGiaoVien"></select>
+                <span asp-validation-for="IdGiaoVien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoGioHoacTuanHoacSoNguoi" class="control-label"></label>
+                <input asp-for="SoGioHoacTuanHoacSoNguoi" class="form-control" />
+                <span asp-validation-for="SoGioHoacTuanHoacSoNguoi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GhiChu" class="control-label"></label>
+                <input asp-for="GhiChu" class="form-control" />
+                <span asp-validation-for="GhiChu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdNamHocHocKy" class="control-label"></label>
+                <input asp-for="IdNamHocHocKy" class="form-control" />
+                <span asp-validation-for="IdNamHocHocKy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

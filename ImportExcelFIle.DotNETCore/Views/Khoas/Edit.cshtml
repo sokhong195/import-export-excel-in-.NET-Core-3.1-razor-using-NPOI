@@ -1,0 +1,52 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.Khoa
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+
+
+<form asp-action="Edit" id="frmKhoaBoMon" asp-route-id="@Model.IdKhoa" onsubmit="return jQueryAjaxPost(this);">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="IdKhoa" class="control-label"></label>
+                <input asp-for="IdKhoa" class="form-control" />
+                <span asp-validation-for="IdKhoa" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="TenKhoa" class="control-label"></label>
+                <input asp-for="TenKhoa" class="form-control" />
+                <span asp-validation-for="TenKhoa" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ThoiGianBatDau" class="control-label"></label>
+                <input asp-for="ThoiGianBatDau" class="form-control" />
+                <span asp-validation-for="ThoiGianBatDau" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ThoiGianKetThuc" class="control-label"></label>
+                <input asp-for="ThoiGianKetThuc" class="form-control" />
+                <span asp-validation-for="ThoiGianKetThuc" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group d-flex justify-content-center">
+                <input type="submit" value="Cập nhật khoa" class="btn btn-primary" />&nbsp;
+                <a asp-action="Index" class="btn btn-info">Quay trở lại danh sách khoa</a>
+
+            </div>
+        </div>
+        </div>
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ImportExcelFIle.DotNETCore.Models.QuyDinhSiSoLopHocPhan>
+
+@{
+    ViewData["Model"] = "Quy định sĩ số lớp học phần";
+    ViewData["Controller"] = "QuyDinhSiSoLopHocPhan" + "s";
+    Layout = null;
+}
+<br />
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<div class="card mb-sm-3" style="min-width: 18rem;">
+    <div class="card-header">
+        <h3 class="card-title float-left" style="margin-left:10px;">
+            <strong>Danh sách @ViewData["Model"]</strong>
+        </h3>
+        <a class="btn btn-primary text-white float-lg-right" onclick="showInPopup('@Url.Action("CreateOrEdit", ""+@ViewData["Controller"], 0, Context.Request.Scheme)','Thêm @ViewData["Model"] mới')"><i class="far fa-plus-square"></i> Thêm @ViewData["Model"]</a>
+    </div>
+    <div class="card-body">
+
+        <div style="width:100%; margin:0 auto;">
+            <table id="tblBangDuLieu" class="table table-striped table-bordered dt-responsive wrap" width="100%" cellspacing="0">
+                <thead style="font-size:13px">
+                    <tr>
+                        <th>STT</th>
+                        <th>@Html.DisplayNameFor(model => model.DangHocPhan)</th>
+                        <th>@Html.DisplayNameFor(model => model.CanDuoi)</th>
+                        <th>@Html.DisplayNameFor(model => model.CanTren)</th>
+                        <th>Hệ số</th>
+                        <th>@Html.DisplayNameFor(model => model.ThoiGianBatDau)</th>
+                        <th>@Html.DisplayNameFor(model => model.ThoiGianKetThuc)</th>
+                        <th style="width:80px; text-align:center">Thao tác</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+</div>
+@Html.AntiForgeryToken()
+<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/moment.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+
+<script src="~/js/quyDinhSiSoLopHocPhanDatatable.js"></script>
+
+

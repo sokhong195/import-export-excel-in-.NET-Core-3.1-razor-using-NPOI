@@ -1,0 +1,251 @@
+﻿@model IEnumerable<ImportExcelFIle.DotNETCore.ModelViews.ViewPhanCongGiangDay>
+
+@{
+    ViewData["Title"] = "Phân công giảng dạy";
+    ViewData["Controller"] = "PhanCongGiangDays";
+}
+
+<h1>Phân công giảng dạy</h1>
+
+<hr />
+<form asp-action="Index" asp-controller="@ViewData["Controller"]" method="get" id="frmPhanCong">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <dl class="dl-horizontal">
+        <dt>
+            <button class="btn @(ViewData["Filtering"])" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                Lọc & Tìm kiếm
+            </button>
+        </dt>
+        <dd>
+            <div class="form-horizontal">
+                <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilter">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-4">
+                            <label class="control-label font-weight-bold">Danh sách khoa</label>
+                            <select id="IdKhoa" name="IdKhoa" class="form-control" asp-items="ViewBag.IdKhoa"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label font-weight-bold">Bộ môn</label>
+                            <select id="IdBoMon" name="IdBoMon" class="form-control" asp-items="ViewBag.IdBoMon"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Tên học phần:</label>
+                            @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Học kỳ Năm học:</label>
+                            <select class="form-control" id="IdNamHocHocKy" name="IdNamHocHocKy" asp-items="ViewBag.IdNamHocHocKy">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Báo giờ:</label>
+                            <select class="form-control" id="IdBaoGioGiangDay" name="IdBaoGioGiangDay" asp-items="ViewBag.IdBaoGioGiangDay">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button name="actionButton" class="btn btn-primary  float-right cancel" type="submit"><i class="fas fa-filter"></i> Lọc danh sách lớp học phần</button>
+                            <a asp-action="Index" class="btn btn-outline-dark cancel">Bỏ lọc</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </dd>
+    </dl>
+
+    <div id="messageBox">
+        <ul>
+        </ul>
+    </div>
+    <table class="table" id="tblPhanCong">
+        <tr>
+            <th>
+                <label class="control-label">STT</label>
+            </th>
+            <th>
+                <button name="actionButton" value="Tên lớp học phần" class="btn btn-link cancel" type="submit">
+                    @Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.TenLopHocPhan)
+                    @if (ViewData["sortDirection"].ToString() == "")
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                    else
+                    {
+                        if (ViewData["sortDirection"].ToString() == "asc")
+                        {
+                            <i class="fas fa-sort-amount-up-alt"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-sort-amount-up"></i>
+                        }
+                    }
+                </button>
+            </th>
+            <th width="150px">
+                Giờ chuẩn
+            </th>
+
+            <th>
+                <label class="control-label">Giáo viên</label>
+            </th>
+            <th>
+                <label class="control-label">Tỷ lệ</label>
+            </th>
+            <th>
+            </th>
+        </tr>
+        <tbody>
+            @{
+                var i = 1;
+            }
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <label>@i</label>
+                            <input type="hidden" asp-for="@item.ViewBaoGioGiangDayChiTiet.IdBaoGioGiangDayChiTiet" />
+                        </td>
+                        @{
+                            i += 1;
+                        }
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ViewBaoGioGiangDayChiTiet.TenLopHocPhan)
+                        </td>
+                        <td>
+                            @{
+                                var details = "<b>" + Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.MaHocPhan) + ": " + "</b>" + item.ViewBaoGioGiangDayChiTiet.MaHocPhan + "<br />" +
+                                      "<b>" + Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.SoTinChi) + ": " + "</b>" + item.ViewBaoGioGiangDayChiTiet.SoTinChi + "<br />" +
+                                              "<b>" + Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.SiSo) + ": " + "</b>" + item.ViewBaoGioGiangDayChiTiet.SiSo + "<br />" +
+                                              "<b>" + Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.SoTietLyThuyet) + ": " + "</b>" + item.ViewBaoGioGiangDayChiTiet.SoTietLyThuyet + "<br />" +
+                                              "<b>" + Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.SoNhom) + ": " + "</b>" + item.ViewBaoGioGiangDayChiTiet.SoNhom + "<br />" +
+                                              "<b>" + Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.SoTietThaoLuanThiNghiemThucHanh) + ": " + "</b>" + item.ViewBaoGioGiangDayChiTiet.SoTietThaoLuanThiNghiemThucHanh + "<br />" +
+                                              "<b>" + Html.DisplayNameFor(model => model.ViewBaoGioGiangDayChiTiet.HuongDanTuHoc) + ": " + "</b>" + item.ViewBaoGioGiangDayChiTiet.HuongDanTuHoc;
+                                var shortcut = String.Format("{0:f2}", item.ViewBaoGioGiangDayChiTiet.SoGioChuan);
+                            }
+                            <a tabindex="0" class="i" role="button" data-toggle="popover" data-html="true"
+                               data-trigger="hover" title="Thông tin học phần" data-placement="bottom" data-content="@details">@shortcut</a>
+                            <input type="hidden" name="SoGioChuan[]" value="@shortcut" />
+                        </td>
+
+                        <td style="width:350px">
+                            <select multiple="multiple" id="abc_@i" asp-for="@item.IdGiaoViens" name="PhanCongGiangDays[]" class="form-control selectGiaoVien" asp-items="ViewBag.IdGiaoVien" data-placeholder="Chọn giáo viên..."></select>
+                        </td>
+                        <td style="width:200px" class="text-center">
+                            <input name="chiaGio[]" class='customLook' value='@ImportExcelFIle.DotNETCore.Utilities.Function.ToListString(item.ChiaGios)'>
+                        </td>
+                        <td class="text-center">
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td align="right" colspan="3">
+                    Số lớp:  <strong>@ViewData["SoMon"] / @ViewData["TongSoMon"]</strong>
+                </td>
+                <td align="right" colspan="1">
+                    <button id="btnSubmit" class="btn btn-info float-right">Cập nhật phân công</button>
+                </td>
+                <td colspan="1">
+                    @*<a  id="btnXuatPhanCong1" onClick= 'location.href="/PhanCongGiangDays/XuatPhanCong1/"+paramterValue'
+ class="btn btn-primary float-right">Xuất phân công</a>*@
+                    <button id="btnXuatPhanCong" class="btn btn-info float-right">Xuất phân công</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    @if (Model != null)
+    {
+        <partial name="_PagingNavBar" />
+    }
+
+</form>
+<style>
+
+    .valid {
+    }
+
+    .error {
+        background-color: #d1e0f7;
+    }
+</style>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    class PhanGioHocPhan {
+        constructor(IdBaoGioGiangDayChiTiet, IdGiaoViens, ChiaGios, SoGio) {
+            this.IdBaoGioGiangDayChiTiet = IdBaoGioGiangDayChiTiet;
+            this.IdGiaoViens = IdGiaoViens;
+            this.ChiaGios = ChiaGios;
+            this.SoGio = SoGio;
+        }
+    }
+    $(document).on('click', '#frmPhanCong #btnSubmit', function (e) {
+
+        e.preventDefault();
+        if ($("#frmPhanCong").valid()) {
+            var arrData = [];
+            $("table > tbody > tr").each(function () {
+                var currentRow = $(this);
+                var cell0 = $(this).find("td:eq(0)");
+                var inputIdBaoGioGiangDay = cell0.find('input');
+                var selectGiaVien = $(currentRow).find("select[name^=PhanCongGiangDays]");
+                var inputChiaGio = $(this).find("input[name^=chiaGio]");
+                var sogioChuan = $(this).find("input[name^=SoGioChuan]");
+                if (inputIdBaoGioGiangDay.val() !== undefined) {
+                    var arrIdGiaoViens = selectGiaVien.val().map(i => Number(i));
+                    var arrInputChiaGio = Array.from(inputChiaGio.val().split(','), Number);
+                    let obj = new PhanGioHocPhan(parseInt(inputIdBaoGioGiangDay.val()), arrIdGiaoViens, arrInputChiaGio, parseFloat(sogioChuan.val()))
+                    arrData.push(obj);
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: 'PhanCongGiangDays/LuuPhanCong',
+                data: JSON.stringify(arrData),
+                processData: false,
+                dataType: 'JSON',
+                contentType: "application/json",
+                success: function (res) {
+                    window.setTimeout(function () { location.reload() }, 2000)
+                    $.notify(res.message, { globalPosition: 'top-center', className: 'success', autoHideDelay: 5000 });
+                }
+            });
+        };
+    });
+
+    $(document).on('click', '#frmPhanCong #btnXuatPhanCong', function (e) {
+        e.preventDefault();
+
+        var IdBoMon = $("#frmPhanCong").find("select[name=IdBoMon]");
+        var IdKhoa = $("#frmPhanCong").find("select[name=IdKhoa]");
+        var IdNamHocHocKy = $("#frmPhanCong").find("select[name=IdNamHocHocKy]");
+        var IdBaoGioGiangDay = $("#frmPhanCong").find("select[name=IdBaoGioGiangDay]");
+        console.log(IdBoMon.val())
+        var data = JSON.stringify({
+            IdKhoa: IdKhoa.val(),
+            IdBoMon: IdBoMon.val(),
+            IdNamHocHocKy: IdNamHocHocKy.val(),
+            IdBaoGioGiangDay: IdBaoGioGiangDay.val()
+        });
+        $.ajax({
+            type: 'POST',
+            url: 'PhanCongGiangDays/XuatPhanCong',
+            data: data,
+            processData: false,
+            dataType: 'JSON',
+            contentType: "application/json",
+            success: function (res) {
+                window.setTimeout(function () { location.reload() }, 2000)
+                $.notify(res.message, { globalPosition: 'top-center', className: 'success', autoHideDelay: 5000 });
+                location.href = '@Url.Action("TaiPhanCong", "PhanCongGiangDays")'+'?fileName='+res.fileName;
+            }
+        });
+    });
+</script>

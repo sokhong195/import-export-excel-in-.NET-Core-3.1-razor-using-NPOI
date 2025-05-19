@@ -452,10 +452,24 @@ $.extend( $.validator, {
 			return this.valid();
 		},
 
-		checkForm: function() {
+		//checkForm: function() {
+		//	this.prepareForm();
+		//	for ( var i = 0, elements = ( this.currentElements = this.elements() ); elements[ i ]; i++ ) {
+		//		this.check( elements[ i ] );
+		//	}
+		//	return this.valid();
+		//},
+		checkForm: function () {
 			this.prepareForm();
-			for ( var i = 0, elements = ( this.currentElements = this.elements() ); elements[ i ]; i++ ) {
-				this.check( elements[ i ] );
+			for (var i = 0, elements = (this.currentElements = this.elements()); elements[i]; i++) {
+				if (this.findByName(elements[i].name).length != undefined && this.findByName(elements[i].name).length > 1) {
+					for (var cnt = 0; cnt < this.findByName(elements[i].name).length; cnt++) {
+						this.check(this.findByName(elements[i].name)[cnt]);
+					}
+				}
+				else {
+					this.check(elements[i]);
+				}
 			}
 			return this.valid();
 		},
@@ -1028,8 +1042,11 @@ $.extend( $.validator, {
 		// See https://api.jquery.com/category/selectors/, for CSS
 		// meta-characters that should be escaped in order to be used with JQuery
 		// as a literal part of a name/id or any selector.
-		escapeCssMeta: function( string ) {
-			return string.replace( /([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g, "\\$1" );
+		escapeCssMeta: function (string) {
+			if (string!== undefined) {
+				return string.replace(/([\\!"#$%&'()*+,./:;<=>?@\[\]^`{|}~])/g, "\\$1");
+			}
+			return "";
 		},
 
 		idOrName: function( element ) {

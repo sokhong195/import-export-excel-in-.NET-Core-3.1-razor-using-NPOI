@@ -1,0 +1,12 @@
+﻿<br />
+<div class="card mb-sm-3" style="min-width: 18rem;">
+    <h4 class="card-header" id="NamHocs">Bảng Năm học</h4>
+    <div class="card-body">
+        @Html.DropDownList("IdNamHocs", null, htmlAttributes: new { @size = 30, @class = "form-control" })
+    </div>
+    <div class="card-footer">
+        <a asp-controller="NamHocs" class="btn btn-primary" asp-action="Create"><i class="far fa-plus-square"> Thêm Năm học</i> </a> |
+        <a asp-controller="NamHocs" class="btn btn-info linkClick" asp-action="Edit"><i class="far fa-edit"> Sửa Năm học</i></a> |
+        <a asp-controller="NamHocs" class="btn btn-danger linkClick" asp-action="Delete"><i class="far fa-trash-alt"> Xóa Năm học</i></a>
+    </div>
+</div>

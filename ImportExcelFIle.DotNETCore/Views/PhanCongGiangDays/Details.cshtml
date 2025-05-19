@@ -1,0 +1,48 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.PhanCongGiangDay
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>PhanCongGiangDay</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoGioHoacTuanHoacSoNguoi)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoGioHoacTuanHoacSoNguoi)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GhiChu)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GhiChu)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdNamHocHocKy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdNamHocHocKy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdBaoGioGiangDayChiTietNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdBaoGioGiangDayChiTietNavigation.TenLopHocPhan)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdGiaoVienNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdGiaoVienNavigation.DienThoai)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdPhanCongGiangDay">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

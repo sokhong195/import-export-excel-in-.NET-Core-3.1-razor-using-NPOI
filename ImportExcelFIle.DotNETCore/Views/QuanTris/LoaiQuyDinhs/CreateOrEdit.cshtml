@@ -1,0 +1,35 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.LoaiQuyDinh
+
+@{
+    ViewData["Model"] = "Loại quy định";
+    ViewData["Title"] = "Tạo mới " + ViewData["Model"];
+    ViewData["Controller"] = "LoaiQuyDinhs";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateOrEdit" asp-route-id="@Model.IdLoaiQuyDinh" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdLoaiQuyDinh" />
+
+            <div class="form-group row">
+                <div class="form-group col-md-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label asp-for="TenLoaiQuyDinh" class="input-group-text"></label>
+                        </div>
+                        <input asp-for="TenLoaiQuyDinh" class="form-control d-inline" />
+                        <div class="input-group-append">
+                            <input type="submit" value="Lưu @ViewData["Model"]" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <span asp-validation-for="TenLoaiQuyDinh" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-info" id="backTab" asp-controller="Trainning" asp-action="Index" asp-route-Tab="LoaiQuyDinhsTab">Quay lại</a>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿@model IEnumerable<ImportExcelFIle.DotNETCore.Models.HocPhan>
+
+@{
+    ViewData["Title"] = "Quản lý danh sách học phần";
+    ViewData["TenModel"] = "học phần";
+    ViewData["Controller"] = "HocPhan" + "s";
+}
+    <form asp-action="ReadFromFile" asp-controller="@ViewData["Controller"]" method="get">
+
+        <div id="view-all">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title float-left" style="margin-left:10px;">
+                        <strong>Danh sách @ViewData["TenModel"]</strong>
+                    </h2>
+                   
+                </div>
+                <div class="form-group">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
+                <dl class="dl-horizontal">
+                 
+                    <dt>
+                        <button class="btn @(ViewData["Filtering"])" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                            Lọc & Tìm kiếm
+                        </button>
+                    </dt>
+                    <dd>
+                        <div class="form-horizontal">
+                            <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilter">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4 ml-md-3">
+                                        <label class="control-label">Khoa:</label>
+                                        @Html.DropDownList("IdKhoa", null, "Tất cả các khoa", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="control-label">Tên học phần:</label>
+                                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-md-3 align-self-end">
+                                        <input type="submit" name="actionButton" value="Lọc" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </dd>
+                    <dd>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.MaHocPhan)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.TenHocPhan)
+                                    </th>
+                                    <th>
+                                        Thông tin số giờ
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ThuocHocKy)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ThoiGianThi)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CoNganHangDe)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ThoiGianBatDau)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.MaHocPhan)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TenHocPhan)
+                                            </td>
+                                            <td>
+                                                @{
+                                                    var details = "<b>" + Html.DisplayNameFor(model => model.SoTinChi) + ": " + "</b>" + item.SoTinChi + "<br />" +
+                                                                  "<b>" + Html.DisplayNameFor(model => model.SoTietLyThuyet) + ": " + "</b>" + item.SoTietLyThuyet + "<br />" +
+                                                                  "<b>" + Html.DisplayNameFor(model => model.SoTietThaoLuanThiNghiemThucHanh) + ": " + "</b>" + item.SoTietThaoLuanThiNghiemThucHanh + "<br />" +
+                                                                  "<b>" + Html.DisplayNameFor(model => model.SoGioChuanBiTuHoc) + ": " + "</b>" + item.SoGioChuanBiTuHoc + "<br />" +
+                                                                  "<b>" + Html.DisplayNameFor(model => model.HuongDanTuHoc) + ": " + "</b>" + item.HuongDanTuHoc;
+                                                    var shortcut = item.SoTinChi + "(" + item.SoTietLyThuyet + ", " + item.SoTietThaoLuanThiNghiemThucHanh + ", " + item.SoGioChuanBiTuHoc + ", " + item.HuongDanTuHoc + ")";
+
+                                                }
+                                                <a tabindex="0" class="" role="button" data-toggle="popover" data-html="true"
+                                                   data-trigger="focus" title="Thông tin số giờ" data-placement="bottom" data-content="@details">@shortcut </a>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ThuocHocKy)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ThoiGianThi)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CoNganHangDe)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ThoiGianBatDau)
+                                            </td>
+                                        </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+
+                @{ var i = (Model == null) ? 0 : Model.Count();}
+            <strong>Số học phần: @i/@ViewData["TotalOfRecord"]</strong>
+            </div>
+        </div>
+        <partial name="_PagingNavBar" />
+        <div class="row">
+            <a class="btn btn-secondary" asp-controller="HocPhans" asp-action="Index">Quay lại</a>
+            &nbsp;&nbsp;                 <a class="btn btn-success" asp-controller="HocPhans" asp-action="SaveFromFile">Lưu báo giờ</a>
+
+        </div>
+    </form>

@@ -1,0 +1,106 @@
+﻿@model ImportExcelFIle.DotNETCore.ModelViews.ViewBaoGioGiangDayChiTiet
+
+@{
+    if (Model.IdBaoGioGiangDayChiTiet == 0)
+    {
+        ViewData["Title"] = "Tạo lớp học phần mới";
+    }
+    else ViewData["Title"] = "Sửa lớp học phần";
+
+    Layout = null;
+    ViewData["Model"] = "Lớp học phần";
+    ViewData["Controller"] = "BaoGioGiangDayChiTiets";
+}
+
+<form asp-action="CreateOrEdit" method="post" asp-route-id="@Model.IdBaoGioGiangDayChiTiet" asp-controller="BaoGioGiangDayChiTiets" onsubmit="return jQueryAjaxPost(this); ">
+    <div class="row">
+
+        <input type="hidden" asp-for="IdBaoGioGiangDayChiTiet" />
+        <input type="hidden" asp-for="IdBaoGioGiangDay" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="col-md-4 form-group">
+            <label asp-for="IdHocPhan" class="control-label font-weight-bold"></label>
+            <select class="form-control form-control-chosen" asp-for="IdHocPhan" asp-items="ViewBag.IdHocPhan"> </select>
+            <span asp-validation-for="IdHocPhan" class="text-danger"></span>
+        </div>
+        <div class="col-md-8 form-group">
+            <label asp-for="TenLopHocPhan" class="control-label font-weight-bold"></label>
+            <input asp-for="TenLopHocPhan" class="form-control" />
+            <span asp-validation-for="TenLopHocPhan" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="SiSo" class="control-label font-weight-bold"></label>
+            <input asp-for="SiSo" class="form-control" />
+            <span asp-validation-for="SiSo" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="SoNhom" class="control-label font-weight-bold"></label>
+            <input asp-for="SoNhom" class="form-control" />
+            <span asp-validation-for="SoNhom" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="GhiChu" class="control-label font-weight-bold"></label>
+            <input asp-for="GhiChu" class="form-control" />
+            <span asp-validation-for="GhiChu" class="text-danger"></span>
+        </div>
+        <div class="col-md-12 form-group">
+            <label class="control-label"><strong>Thông tin học phần:</strong></label>
+
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="SoTinChi" class="control-label font-weight-bold"></label>
+            <input asp-for="SoTinChi" class="form-control" readonly />
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="SoTietLyThuyet" class="control-label font-weight-bold"></label>
+            <input asp-for="SoTietLyThuyet" class="form-control" readonly />
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label asp-for="HuongDanTuHoc" class="control-label font-weight-bold"></label>
+            <input asp-for="HuongDanTuHoc" class="form-control" readonly />
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="SoGioChuanBiTuHoc" class="control-label font-weight-bold"></label>
+            <input asp-for="SoGioChuanBiTuHoc" class="form-control" readonly />
+        </div>
+        <div class="col-md-8 form-group">
+            <label asp-for="SoTietThaoLuanThiNghiemThucHanh" class="control-label font-weight-bold"></label>
+            <input asp-for="SoTietThaoLuanThiNghiemThucHanh" class="form-control" readonly />
+        </div>
+        <br />
+        <div class="col-md-12">
+            <div class="form-group text-right float-right">
+                <input type="submit" value="Lưu @ViewData["Model"]" class="btn btn-primary" />
+            </div>
+            <div class="form-group text-left float-left">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">Quay lại</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(function () {
+        $(".form-control-chosen").chosen({ no_results_text: "Không tồn tại học phần!" }).change(function () {
+            var idHocPhan = this.value;
+            $.ajax({
+                type: 'GET',
+                url: "/HocPhans/GetValues?idHocPhan=" + idHocPhan,
+                success: function (res) {
+                    $('#SoTinChi').val(res.stc);
+                    $('#SoTietLyThuyet').val(res.tlt);
+                    $('#HuongDanTuHoc').val(res.hdth);
+                    $('#SoGioChuanBiTuHoc').val(res.cbth);
+                    $('#SoTietThaoLuanThiNghiemThucHanh').val(res.tntlth);
+                    $('#TenLopHocPhan').val(res.tenhp);
+
+                }
+            })
+        });
+    });
+</script>
+

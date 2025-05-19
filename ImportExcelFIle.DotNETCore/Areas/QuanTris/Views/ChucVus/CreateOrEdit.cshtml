@@ -1,0 +1,147 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.ChucVu
+
+@{
+    ViewData["Model"] = "Chức vụ";
+    ViewData["Controller"] = "ChucVus";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateOrEdit" asp-route-id="@Model.IdChucVu" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdChucVu" />
+
+            <div class="form-group row">
+                <div class="input-group col-md-12">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text">Tên chức vụ</label>
+                    </div>
+                    <input asp-for="TenChucVu" class="form-control d-inline" />
+                </div>
+                <div class="col-md-12">
+                    <span asp-validation-for="TenChucVu" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-striped table-sm" id="detailsTable">
+                    <thead>
+                        <tr>
+                            <th style="width:50px">
+                                Giá trị
+                            </th>
+                            <th style="width:200px">
+                                Thời gian bắt đầu
+                            </th>
+                            <th style="width:200px">
+                                Thời gian kết thúc
+                            </th>
+                            <th style="width:50px">
+                                <button id="addToList" type="button" class="btn btn-sm btn-secondary visible">
+                                    <i class="far fa-plus-square"> Thêm</i>
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.HeSoChucVus != null)
+                            @if (Model.HeSoChucVus.Count > 0)
+
+                            {
+                                for (int i = 0; i < Model.HeSoChucVus.Count(); i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.HeSoChucVus[i].IdHeSoChucVu" />
+
+                                            <input asp-for="@Model.HeSoChucVus[i].GiaTri" class="form-control" />
+                                            <span asp-validation-for="@Model.HeSoChucVus[i].GiaTri"></span>
+                                        </td>
+                                        <td>
+                                            <input asp-format="{0:yyyy-MM-dd}" asp-for="@Model.HeSoChucVus[i].ThoiGianBatDau" class="form-control" />
+                                            <span asp-validation-for="@Model.HeSoChucVus[i].ThoiGianBatDau"></span>
+                                        </td>
+                                        <td>
+                                            <input asp-for="@Model.HeSoChucVus[i].ThoiGianKetThuc" class="form-control" />
+                                            <span asp-validation-for="@Model.HeSoChucVus[i].ThoiGianKetThuc"></span>
+                                        </td>
+                                        <td>
+                                            <a data-itemId='0' href='#' class='deleteItem'><i class="fas fa-eraser"></i> Xóa</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            <div class="form-group">
+                <div class="form-group text-left float-left">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">Quay lại</span>
+                    </button>
+                </div>
+                <button type="submit" id="Luu" class="btn btn-primary float-right">
+                    <i class="far fa-save"></i> Lưu @ViewData["Model"]
+                </button>
+            </div>
+                <input type="hidden" name="SoDong" id="SoDong" value="@ViewData["SoDong"]" />
+            </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#addToList").click(function (e) {
+        e.preventDefault();
+        var lastrowIdx = document.getElementById('SoDong').value;
+        var nextrowIdx = eval(lastrowIdx) + 1;
+        document.getElementById('SoDong').value = nextrowIdx;
+        var trBoMon = "<tr>";
+        trBoMon += "<td><input type='hidden' data-val='true' data-val-required='The IdHeSoChucVu field is required.' id='HeSoChucVus_"+lastrowIdx+"__IdHeSoChucVu' name='HeSoChucVus["+lastrowIdx+"].IdHeSoChucVu' value='0'><input class='form-control' type='text' data-val='true' data-val-number='The field Giá trị must be a number.' data-val-regex='Nhập một số dương' data-val-regex-pattern='(^[+]?([0-9]+([.][0-9]*)?|[.][0-9]+)$)' data-val-required='Nhập giá trị' id='HeSoChucVus_"+lastrowIdx+"__GiaTri' name='HeSoChucVus["+lastrowIdx+"].GiaTri' value='-1'><span class='errorSpan field-validation-valid' data-valmsg-for='HeSoChucVus["+lastrowIdx+"].GiaTri' data-valmsg-replace='true'></span></td>";
+        trBoMon += " <td><input class='form-control' type='date' data-val='true' data-val-required='The Thời gian bắt đầu field is required.' id='HeSoChucVus_"+lastrowIdx+"__ThoiGianBatDau' name='HeSoChucVus["+lastrowIdx+"].ThoiGianBatDau' value='@DateTime.Now.ToString("yyyy-MM-dd")'><span class='errorSpan field-validation-valid' data-valmsg-for='HeSoChucVus["+lastrowIdx+"].ThoiGianBatDau' data-valmsg-replace='true'></span></td>";
+        trBoMon += "<td><input class='form-control' type='date' id='HeSoChucVus_"+lastrowIdx+"__ThoiGianKetThuc' name='HeSoChucVus["+lastrowIdx+"].ThoiGianKetThuc' value=''><span class='errorSpan field-validation-valid' data-valmsg-for='HeSoChucVus["+lastrowIdx+"].ThoiGianKetThuc' data-valmsg-replace='true'></span></td>";
+        trBoMon += "<td><a data-itemId='0' href='#' class='deleteItem'><i class='fas fa-eraser'> Xóa</i></a></td>";
+        trBoMon += "</tr>";
+        detailsTableBody = $("#detailsTable tbody");
+        detailsTableBody.append(trBoMon);
+    });
+
+    $(document).on('click', 'a.deleteItem', function (e) {
+        e.preventDefault();
+        var $self = $(this);
+        if ($(this).attr('data-itemId') == "0") {
+            $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                $(this).remove();
+            });
+        }
+    });
+
+    function ReplaceName(Name, index) {
+            var reggie = /(\[[\d]+\])/;
+            return Name.replace(reggie,"["+index+ "]");
+    }
+    function ReplaceId(Id, index) {
+            var reggie = /(__[\d]+__)/;
+            return Id.replace(reggie,"["+index+ "]");
+    }
+    $("#Luu").click(function (e) {
+        var i = 0;
+        $.each($("#detailsTable tbody tr"), function () {
+
+            var inputID = $(this).find('td:eq(0)').find('input:eq(0)')
+            var inputGiaTri = $(this).find('td:eq(0)').find('input:eq(1)')
+            //console.log("Truoc " + inputID.attr("name"));
+            $(this).find('td:eq(0)').find('input:eq(0)').attr("name", ReplaceName(inputID.attr("name"), i));
+            $(this).find('td:eq(0)').find('input:eq(0)').attr("id", ReplaceId(inputID.attr("id"), i));
+            $(this).find('td:eq(0)').find('input:eq(1)').attr("name", ReplaceName(inputGiaTri.attr("name"), i));
+            $(this).find('td:eq(0)').find('input:eq(1)').attr("id", ReplaceId(inputGiaTri.attr("id"), i));
+            var inputThoiGianBatDau = $(this).find('td:eq(1)').find('input:eq(0)')
+            $(this).find('td:eq(1)').find('input:eq(0)').attr("name", ReplaceName(inputThoiGianBatDau.attr("name"), i));
+            $(this).find('td:eq(1)').find('input:eq(0)').attr("id", ReplaceId(inputThoiGianBatDau.attr("id"), i));
+            var inputThoiGianKetThuc = $(this).find('td:eq(2)').find('input:eq(0)')
+            $(this).find('td:eq(2)').find('input:eq(0)').attr("name", ReplaceName(inputThoiGianKetThuc.attr("name"), i));
+            $(this).find('td:eq(2)').find('input:eq(0)').attr("id", ReplaceId(inputThoiGianKetThuc.attr("id"), i));
+
+            //console.log("Sau " + $(this).find('td:eq(0)').find('input:eq(0)').attr("name"));
+            i++;
+        });
+    });
+</script>

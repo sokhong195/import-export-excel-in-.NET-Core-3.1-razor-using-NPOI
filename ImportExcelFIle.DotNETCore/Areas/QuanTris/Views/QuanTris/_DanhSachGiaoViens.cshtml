@@ -1,0 +1,305 @@
+﻿@model IEnumerable<ImportExcelFIle.DotNETCore.ModelViews.ViewGiaoVien>
+@{
+    ViewData["Title"] = "Quản lý danh sách giáo viên";
+    ViewData["Model"] = "Giáo viên";
+    ViewData["Controller"] = "DanhSachGiaoVien" + "s";
+    Layout = null;
+}
+@using ImportExcelFIle.DotNETCore.Utilities
+@using ImportExcelFIle.DotNETCore.ModelViews
+<br />
+<div class="card mb-sm-3" style="min-width: 18rem;">
+    <div class="card-header">
+        <h2 class="card-title float-left" style="margin-left:10px;">
+            <strong>Danh sách @ViewData["Model"]</strong>
+        </h2>
+        <button style="margin-left:10px;" class="btn btn-primary float-right" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilterFile" aria-expanded="true" aria-controls="collapseFilter">
+            <i class="fas fa-file-import"></i> Thêm @ViewData["Model"] từ tệp
+        </button>
+        <a href="@Url.Action("Index", "QuanTris", new {Tab="GiaoViensTab", IdGiaoVien = 0 }, Context.Request.Scheme)"  class="btn btn-success text-white float-lg-right"><i class="fas fa-random"></i> Thêm @ViewData["Model"] mới</a> &nbsp;
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        <dl class="dl-horizontal">
+            <dd>
+                <form asp-action="CreateFromFile" enctype="multipart/form-data" asp-controller="DanhSachGiaoViens" method="post">
+                    <div class="form-horizontal">
+                        <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilterFile">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input id="theFile" name="theFile" type="file" class="custom-file-input">
+                                    <label for="theFile" class="custom-file-label text-truncate">Tải tập tin excel (.xlsx)...</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-warning" id="btnupload">Tải tập tin</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </dd>
+
+        </dl>
+        <form asp-action="Index" asp-controller="QuanTris" method="get">
+            <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+            <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+            <input type="hidden" name="Tab" value="DanhSachGiaoViensTab" />
+            <dl class="dl-horizontal">
+                <dt>
+                    <button class="btn @(ViewData["Filtering"])" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                        Lọc & Tìm kiếm
+                    </button>
+                </dt>
+                <dd>
+                    <div class="form-horizontal">
+                        <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilter">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label class="control-label font-weight-bold">Khoa:</label>
+                                    @Html.DropDownList("IdKhoa", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label font-weight-bold">Bộ môn:</label>
+                                    @Html.DropDownList("IdBoMon", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label font-weight-bold">Công việc:</label>
+                                    @Html.DropDownList("IdLoaiCongViec", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-3">
+                                    <label class="control-label font-weight-bold">Phòng trung tâm:</label>
+                                    @Html.DropDownList("IdPhongTrungTam", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label font-weight-bold">Chức vụ:</label>
+                                    @Html.DropDownList("IdChucVu", null, htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label font-weight-bold">Họ tên giáo viên:</label>
+                                    @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label font-weight-bold">Thời gian:</label>
+                                    <input type="date"  id="thoiGian" value="@ViewData["thoiGian"]" name="thoiGian" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <button name="actionButton" class="btn btn-primary  float-right" type="submit"><i class="fas fa-filter"></i> Lọc danh sách khoa</button>
+                                    <a asp-action="Index" class="btn btn-outline-dark ">Bỏ lọc</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </dd>
+                <dd>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    STT
+                                </th>
+                                <th>
+                                    <button name="actionButton" value="Họ tên giáo viên" class="btn btn-link" type="submit">
+                                        @Html.DisplayNameFor(model => model.HoTenGiaoVien)
+                                        @if (ViewData["sortDirection"].ToString() == "")
+                                        {
+                                            <i class="fas fa-sort"></i>
+                                        }
+                                        else
+                                        {
+                                            if (ViewData["sortDirection"].ToString() == "asc")
+                                            {
+                                                <i class="fas fa-sort-amount-up-alt"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-sort-amount-up"></i>
+                                            }
+                                        }
+                                    </button>
+                                </th>
+
+                                <th>
+                                    Vị trí công việc
+                                </th>
+                                <th>
+                                    Thông tin lương
+                                </th>
+
+                                @if (TempData["ViewGiaoViens"] == null)
+                                {
+                                    <th class="removeBorder"></th>
+                                    <th class="text-center removeBorder">
+                                        <input data-toggle="tooltip" data-placement="top" title="Chọn tất cả" type="checkbox" id="checkBoxAll" class="form-check form-check-inline" />
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var stt = 0;
+                            }
+                            @if (Model != null)
+
+                                @foreach (var item in Model)
+                                {
+                                    stt++;
+                                    <tr>
+                                        <td>
+                                            @stt
+                                        </td>
+                                        <td>
+                                            @{
+                                                var details1 = "<b>" + Html.DisplayNameFor(model => model.NgaySinh) + ": " + "</b>" + item.NgaySinh.ToString("dd/MM/yyyy") + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.DienThoai) + ": " + "</b>" + item.DienThoai + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.Email) + ": " + "</b>" + item.Email + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.GioiTinh) + ": " + "</b>" + (item.GioiTinh == true ? "Nam" : "Nữ");
+                                                var shortcut1 = item.HoTenGiaoVien;
+
+                                            }
+                                            <a tabindex="0" class="" role="button" data-toggle="popover" data-html="true"
+                                               data-trigger="hover" title="Thông tin cá nhân" data-placement="bottom" data-content="@details1">@shortcut1 </a>
+                                        </td>
+                                        <td>
+                                            @{
+                                                var details2 = "";
+                                                var shortcut2  = "";
+                                                if ( !Function.ListIsNullOrEmpty( item.ViewGiaoVienChiTiets))
+                                                {
+                                                    details2 =  "<b>" + Html.DisplayNameFor(model => model.ViewGiaoVienChiTiets[0].IdBoMon) + ": " + "</b>" + item.ViewGiaoVienChiTiets[0].TenBoMon + "<br />" +
+                                                               "<b>" + Html.DisplayNameFor(model => model.ViewGiaoVienChiTiets[0].IdKhoa) + ": " + "</b>" + item.ViewGiaoVienChiTiets[0].TenKhoa + "<br />"
+                                                               + "<b>" + Html.DisplayNameFor(model => model.ViewGiaoVienChiTiets[0].IdPhongTrungTam) + ": " + "</b>" +item.ViewGiaoVienChiTiets[0].TenPhongTrungTam+ "<br />"              ;
+                                                    shortcut2  = item.ViewGiaoVienChiTiets[0].TenLoaiCongViec;
+                                                }
+                                            }
+                                            <a tabindex="0" class="" role="button" data-toggle="popover" data-html="true"
+                                               data-trigger="hover" title="Vị trí công việc" data-placement="bottom" data-content="@details2">@shortcut2 </a>
+                                        </td>
+                                        <td>
+                                            @{
+                                                var details3 = "";
+                                                var shortcut3 = "";
+                                                if ( !Function.ListIsNullOrEmpty( item.CacHeSoLuongs))
+                                                {
+                                                    details3 = "<b>" + Html.DisplayNameFor(model => model.CacHeSoLuongs[0].HeSoLuong) + ": " + "</b>" + item.CacHeSoLuongs[0].HeSoLuong.ToString("F2") + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.CacHeSoLuongs[0].PhuCapChucVu) + ": " + "</b>" + ((item.CacHeSoLuongs[0].PhuCapChucVu==null)?"0":((float)item.CacHeSoLuongs[0].PhuCapChucVu).ToString("F2")) + "<br />"
+                                                              + "<b>" + Html.DisplayNameFor(model => model.CacHeSoLuongs[0].PhuCapNgheNghiep) + ": " + "</b>" + ((item.CacHeSoLuongs[0].PhuCapNgheNghiep==null)?"0":((float)item.CacHeSoLuongs[0].PhuCapNgheNghiep).ToString("F2"))+ "<br />"              ;
+                                                 shortcut3 = "(" +item.CacHeSoLuongs[0].HeSoLuong.ToString("F2") +", "+((item.CacHeSoLuongs[0].PhuCapChucVu==null)?"0":((float)item.CacHeSoLuongs[0].PhuCapChucVu).ToString("F2"))+", "+((item.CacHeSoLuongs[0].PhuCapNgheNghiep==null)?"0":((float)item.CacHeSoLuongs[0].PhuCapNgheNghiep).ToString("F2"))+" )";
+                                                }
+                                            }
+                                            <a tabindex="0" class="" role="button" data-toggle="popover" data-html="true"
+                                               data-trigger="hover" title="Các hệ số lương" data-placement="bottom" data-content="@details3">@shortcut3 </a>
+                                        </td>
+                                        @if (TempData["ViewGiaoViens"] == null)
+                                        {
+                                            <td class="removeBorder">
+                                                <a href="@Url.Action("Index", "QuanTris", new {Tab="GiaoViensTab", IdGiaoVien = item.IdGiaoVien }, Context.Request.Scheme)" data-toggle="tooltip" title="Sửa @ViewData["Model"]" class="btn btn-info btn-sm fontawesome"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>
+                                            <td class="text-center removeBorder">
+                                                <input data-toggle="tooltip" name="cbbIsDelete" value="@item.IdGiaoVien" data-placement="top" title="Xóa @ViewData["Model"]" type="checkbox" class="form-check form-check-inline chkCheckBoxId" />
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                        </tbody>
+                        @{ var i = (Model == null) ? 0 : Model.Count();}
+                        <tfoot align="right">
+                            <tr>
+                                <td colspan="6">
+                                    <strong class="float-left">Số giáo viên: @i/@ViewData["TotalOfRecord"]</strong>
+                                    @if (TempData["ViewGiaoViens"] == null)
+                                    {
+                                        <button asp-action="DownLoad" type="submit" class="btn btn-secondary text-white btn-sm fontawesome"><i class="fas fa-file-download"></i> Xuất danh sách @ViewData["Model"]</button>
+                                        <a style="margin-left:10px;" class="btn btn-danger text-white btn-sm fontawesome float-right" onclick="return jQueryAjaxDeleteAll('@Url.Action("DeleteAll", "" + @ViewData["Controller"], null, Context.Request.Scheme)','Xác nhận xóa các @ViewData["Model"]' );"><i class="far fa-trash-alt"></i> Xóa các @ViewData["Model"]</a>
+                                    }
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </dd>
+            </dl>
+            <partial name="_PagingNavBar" />
+            @if (TempData["ViewGiaoViens"] != null)
+            {
+                <div class="row">
+                    <a class="btn btn-secondary" asp-controller="DanhSachGiaoViens" asp-action="Index">Quay lại</a>
+                    &nbsp;&nbsp;<a class="btn btn-success" asp-controller="DanhSachGiaoViens" asp-action="SaveFromFile">Lưu các @ViewData["Model"]</a>
+                </div>
+                TempData["ViewGiaoViens"] = TempData["ViewGiaoViens"];
+            }
+        </form>
+    </div>
+</div>
+<style>
+    .removeBorder {
+        padding-left: 0px;
+        padding-right: 0px;
+        width: 50px;
+    }
+</style>
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+            @Html.Raw(TempData["msg"])
+    </script>
+}
+<script type="text/javascript">
+    $(function () {
+        $('#btnupload').on('click', function () {
+            var fileExtension = ['xlsx'];
+            var filename = $('#theFile').val();
+            if (filename.length == 0) {
+                alert("Hãy chọn tập tin excel (.xlsx)!");
+                return false;
+            }
+            else {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) == -1) {
+                    alert("Hãy chọn tập tin excel (.xlsx)!");
+                    return false;
+                }
+            }
+            $('#theFile').val(filename);
+        })
+        $('#btnExport').on('click', function () {
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#theFile').val();
+            if (filename.length == 0) {
+                alert("Please select a file then Import");
+                return false;
+            }
+        });
+    });
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+$(function () {
+    $('[data-toggle="popover"]').popover();
+});
+        $('#IdKhoa').change(function () {
+        var selectedKhoa = $("#IdKhoa").val();
+        var URL = "/BoMons/GetBoMons?IdKhoa=" + selectedKhoa;
+        if ($('#IdBoMon').length > 0)
+            refreshDDL('IdBoMon', URL, true, 'Hãy lựa chọn bộ môn');
+        });
+$('#checkBoxAll').click(function () {
+    if ($(this).is(":checked")) {
+        $(".chkCheckBoxId").prop("checked", true)
+    }
+    else {
+        $(".chkCheckBoxId").prop("checked", false)
+    }
+});
+$('.chkCheckBoxId').click(function () {
+    if (!$(this).prop(":checked")) {
+        $("#checkBoxAll").prop("checked", false)
+    }
+});
+    $('.custom-file-input').on('change', function () {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+});
+</script>

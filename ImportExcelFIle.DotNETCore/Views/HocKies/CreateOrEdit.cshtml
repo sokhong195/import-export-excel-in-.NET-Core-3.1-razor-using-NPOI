@@ -1,0 +1,37 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.HocKy
+
+@{
+    ViewData["Model"] = "Học kỳ";
+    ViewData["Title"] = "Tạo mới " + ViewData["Model"];
+    ViewData["Controller"] = "HocKy"+"s";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateOrEdit" asp-route-id="@Model.IdHocKy" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdHocKy" />
+
+            <div class="form-group row">
+                <div class="form-group col-md-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <label asp-for="TenHocKy" class="input-group-text"></label>
+                        </div>
+                        <input asp-for="TenHocKy" class="form-control d-inline" />
+                        <div class="input-group-append">
+                            <input type="submit" value="Lưu @ViewData["Model"]" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    <span asp-validation-for="TenHocKy" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group text-left float-left">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">Quay lại</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

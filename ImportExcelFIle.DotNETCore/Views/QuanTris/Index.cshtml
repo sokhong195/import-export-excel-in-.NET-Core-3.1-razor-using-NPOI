@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Quản lý Đào tạo";
+    Dictionary<string, string> listTab = new Dictionary<string, string>();
+        listTab.Add("PhongTrungTams", "Phòng trung tâm");
+        listTab.Add("ChucVus", "Chức vụ");
+        listTab.Add("LoaiQuyDinhs", "Loại quy định");
+        listTab.Add("QuyDinhs", "Quy định");
+        listTab.Add("LoaiCongViecs", "Loại công việc");
+    string str = "";
+    foreach (var item in listTab)
+    {
+        str += " case '" + item.Key.ToString() + @"Panel': $('#" + item.Key.ToString() + @"Panel').load('/QuanTris/" + item.Key.ToString() + @"');break;";
+    }
+}
+<h2>Quản trị dữ liệu</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="myTabs" role="tablist">
+        <li class="nav-item">
+            <a href="#DefaultPanel" aria-controls="DefaultTab" role="tab" class="nav-link active" name="DefaultTab" data-toggle="tab" aria-selected="false"> </a>
+        </li>
+        @foreach (var item in listTab)
+        {
+            <li class="nav-item">
+                <a href="#@item.Key.ToString()Panel" id="@item.Key.ToString()Tab" aria-controls="@item.Key.ToString()Tab" role="tab" class="nav-link" name="@item.Key.ToString()Panel" data-toggle="tab" aria-selected="false">@item.Value</a>
+            </li>
+        }
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade ml-3 show active" id="DefaultPanel">
+            <br />
+            <h4>
+                Chọn nhiệm vụ cần thực hiện
+            </h4>
+        </div>
+        @foreach (var item in listTab)
+        {
+            <div role="tabpanel" class="tab-pane fade ml-3" id="@item.Key.ToString()Panel" aria-labelledby="@item.Key.ToString()-Panel">
+                <br />
+            </div>
+        }
+    </div>
+</div>
+<hr />
+<br />
+
+@section Scripts {
+    <script type="text/javascript">
+        function refreshTab(activeTab) {
+            switch (activeTab) {
+                @Html.Raw(@str)
+                default: break;
+            };
+            return;
+        };
+        $('.nav-link').click( function () {
+            var activeTab = $(this).attr("name");
+            refreshTab(activeTab);
+        });
+        $(".tab-content").on("click",".linkClick", function (event) {
+            event.preventDefault();
+            var address = $(this).attr("href");
+            var lookup = address.split("/")[1];
+            var id = $("#"  + "Id"+ lookup).val();
+            var caption = $("#" + lookup).html();
+            if (id == null) {
+                alert("Lỗi: chưa chọn giá trị " + caption + " trong danh sách!");
+            } else {
+                window.location.href = address + "/" + id;
+            }
+        });
+        $(function () {
+            setTimeout(function () {
+                $("#@ViewData["Tab"]").trigger('click');
+            }, 3);
+        });
+    </script>
+}

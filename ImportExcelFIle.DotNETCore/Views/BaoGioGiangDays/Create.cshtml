@@ -1,0 +1,84 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.BaoGioGiangDay
+
+@{
+    ViewData["Title"] = "Tạo báo giờ giảng dạy";
+}
+
+<h1>Tạo báo giờ giảng dạy</h1>
+
+<hr />
+<div class="col-md-12 mx-auto pt-0 p-0">
+    <div class="card">
+        <div class="card-header bg-success text-uppercase text-white" style="height:45px">
+            <h4>Thông tin báo giờ</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data" id="frmCreate">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="TenPhanCongGiangDay" class="control-label"></label>
+                            <input asp-for="TenPhanCongGiangDay" class="form-control" />
+                            <span asp-validation-for="TenPhanCongGiangDay" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Học kỳ Năm học:</label>
+                            <select class="form-control" asp-for="IdNamHocHocKy" name="IdNamHocHocKy" asp-items="ViewBag.IdNamHocHocKy">
+                                <option value="0">Hãy chọn học kỳ</option>
+                            </select>
+                            <span asp-validation-for="IdNamHocHocKy" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ThoiGianBatDau" class="control-label"></label>
+                            <input asp-for="ThoiGianBatDau" class="form-control" />
+                            <span asp-validation-for="ThoiGianBatDau" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ThoiGianKetThuc" class="control-label"></label>
+                            <input asp-for="ThoiGianKetThuc" class="form-control" />
+                            <span asp-validation-for="ThoiGianKetThuc" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.TenTepBaoGio.Length > 0)
+                        {
+                            <div class="form-group">
+                                <label class="control-label">Tên tệp: @Model.TenTepBaoGio</label>                              
+                            </div>
+                        }
+                        else
+                        {
+                    <div class="form-group">
+                        <label class="control-label">Chọn tập tin báo giờ:</label>
+                        <input type="file" class="form-control-file" name="theFile" id="theFile" />
+                        <input type="hidden" asp-for="TenTepBaoGio" />
+                        <span asp-validation-for="TenTepBaoGio" class="text-danger"></span>
+                    </div>
+                        }
+                    </div>
+                  
+                    <div class="col-12 btn-group">
+                        <div class="form-group text-left p-2">
+                            <a class="btn btn-info" asp-controller="Trainning" asp-action="Index" asp-route-Tab="BaoGioGiangDaysTab">Quay lại</a>
+                        </div>
+                        
+                        <div class="form-group text-right p-2">
+                            <button type="submit" id="btnupload" asp-action="TaiBaoGio" class="btn btn-primary" value="InsertFromExcel">Tải Báo giờ</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

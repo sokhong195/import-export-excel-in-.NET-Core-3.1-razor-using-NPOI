@@ -1,0 +1,63 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.ViewNamHocHocKys
+
+@{
+    ViewData["Title"] = "Tạo năm học mới";
+}
+
+<h1>Tạo năm học mới</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+
+        @using (Html.BeginForm("Create", "NamHocs", FormMethod.Post))
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.namHoc.TenNamHoc" class="control-label"></label>
+                <input asp-for="@Model.namHoc.TenNamHoc" class="form-control" />
+                <span asp-validation-for="@Model.namHoc.TenNamHoc" class="text-danger"></span>
+            </div>
+
+            <div class=form-group>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th width = "20%" scope="col">Học kỳ</th>
+                            <th scope="col">Ngày bắt đâu</th>
+                            <th scope="col">Ngày kết thúc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.hocKies.Count; i++)
+                        {
+                            @Html.HiddenFor(m => Model.hocKies[i].TenHocKy)
+                            <tr>
+                                <th scope="row">@i</th>
+                                <td>@Model.hocKies[i].TenHocKy</td>
+                                <td>
+                                    <input asp-for="@Model.thoiGianBatDaus[i]" class="form-control" />
+                                    <span asp-validation-for="@Model.thoiGianBatDaus[i]"></span>
+                                    @Html.HiddenFor(m => Model.thoiGianBatDaus[i])
+                                </td>
+                                <td>
+                                    <input asp-for="@Model.thoiGianKetThucs[i]" class="form-control" />
+                                    <span asp-validation-for="@Model.thoiGianKetThucs[i]" class="text-danger"></span>
+                                    @Html.HiddenFor(m => Model.thoiGianKetThucs[i])
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Tạo năm học" class="btn btn-primary" />
+                <a class="btn btn-info" asp-controller="Trainning" asp-action="Index" asp-route-Tab="NamHocsTab">Quay lại</a>
+            </div>
+        }
+    </div>
+</div>
+
+

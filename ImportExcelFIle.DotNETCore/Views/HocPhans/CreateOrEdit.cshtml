@@ -1,0 +1,199 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.HocPhan
+
+@{
+    if (Model.IdHocPhan == 0)
+    {
+        ViewData["Title"] = "Tạo học phần mới";
+    }
+    else ViewData["Title"] = "Sửa học phần";
+
+    Layout = null;
+    ViewData["TenModel"] = "Học phần";
+}
+
+        <form asp-action="CreateOrEdit" asp-route-id="@Model.IdHocPhan" asp-controller="HocPhans" onsubmit="return jQueryAjaxPost(this);">
+            <div class="row">
+                <input type="hidden" asp-for="IdHocPhan" />
+                <input type="hidden" id="SoGioLyThuyet1TinChi" value="@ViewBag.SoGioLyThuyet1TinChi" />
+
+                <input type="hidden" id="SoGioHuongDanTuHocCho1TinChi" value="@ViewBag.SoGioHuongDanTuHocCho1TinChi" />
+                <input type="hidden" id="SoGioTuHocCho1TinChi" value="@ViewBag.SoGioTuHocCho1TinChi" />
+                <input type="hidden" id="SoGioThucHanh1TinChi" value="@ViewBag.SoGioThucHanh1TinChi" />
+                <input type="hidden" id="SoGioThucTapDoAnKhoaLuanTotNghiepCho1TinChi" value="@ViewBag.SoGioThucTapDoAnKhoaLuanTotNghiepCho1TinChi" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="MaHocPhan" class="control-label font-weight-bold"></label>
+                    <input asp-for="MaHocPhan" class="form-control" />
+                    <span asp-validation-for="MaHocPhan" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="TenHocPhan" class="control-label font-weight-bold"></label>
+                    <input asp-for="TenHocPhan" class="form-control" />
+                    <span asp-validation-for="TenHocPhan" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="SoTinChi" class="control-label font-weight-bold"></label>
+                    <input asp-for="SoTinChi" class="form-control" />
+                    <span asp-validation-for="SoTinChi" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ThuocHocKy" class="control-label font-weight-bold"></label>
+                    <input asp-for="ThuocHocKy" class="form-control" />
+                    <span asp-validation-for="ThuocHocKy" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label class="control-label font-weight-bold">Danh sách khoa</label>
+                    <select asp-for="IdKhoa" id="IdKhoaCE" name="IdKhoa" class="form-control" asp-items="ViewBag.IdKhoa">
+                    </select>
+                    <span asp-validation-for="IdKhoa" class="text-danger"></span>
+
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="IdBoMon" class="control-label font-weight-bold"></label>
+                    <select asp-for="IdBoMon" id="IdBoMonCE" class="form-control" asp-items="ViewBag.IdBoMon"></select>
+                    <span asp-validation-for="IdBoMon" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="IdLoaiHocPhan" class="control-label font-weight-bold"></label>
+                    <select asp-for="IdLoaiHocPhan" class="form-control" asp-items="ViewBag.IdLoaiHocPhan"></select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="IdHinhThucThi" class="control-label font-weight-bold"></label>
+                    <select asp-for="IdHinhThucThi" class="form-control" asp-items="ViewBag.IdHinhThucThi"></select>
+                    <span asp-validation-for="IdHinhThucThi" class="text-danger"></span>
+
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ThoiGianThi" class="control-label font-weight-bold"></label>
+                    <input asp-for="ThoiGianThi" class="form-control" />
+                    <span asp-validation-for="ThoiGianThi" class="text-danger"></span>
+                </div>
+
+
+                <div class="col-md-6 form-group">
+                    <label asp-for="SoTietLyThuyet" class="control-label font-weight-bold"></label>
+                    <input asp-for="SoTietLyThuyet" class="form-control" />
+                    <span asp-validation-for="SoTietLyThuyet" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="SoTietThaoLuanThiNghiemThucHanh" class="control-label font-weight-bold"></label>
+                    <input asp-for="SoTietThaoLuanThiNghiemThucHanh" class="form-control" />
+                    <span asp-validation-for="SoTietThaoLuanThiNghiemThucHanh" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="SoGioChuanBiTuHoc" class="control-label font-weight-bold"></label>
+                    <input asp-for="SoGioChuanBiTuHoc" class="form-control" readonly />
+                    <span asp-validation-for="SoGioChuanBiTuHoc" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="HuongDanTuHoc" class="control-label font-weight-bold"></label>
+                    <input asp-for="HuongDanTuHoc" class="form-control" readonly />
+                    <span asp-validation-for="HuongDanTuHoc" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="IdTrinhDo" class="control-label font-weight-bold"></label>
+                    <select asp-for="IdTrinhDo" class="form-control" asp-items="ViewBag.IdTrinhDo"></select>
+                    <span asp-validation-for="IdTrinhDo" class="text-danger"></span>
+
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ThoiGianBatDau" class="control-label font-weight-bold"></label>
+                    <input asp-for="ThoiGianBatDau" class="form-control" />
+                    <span asp-validation-for="ThoiGianBatDau" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ThoiGianKetThuc" class="control-label font-weight-bold"></label>
+                    <input asp-for="ThoiGianKetThuc" class="form-control" />
+                    <span asp-validation-for="ThoiGianKetThuc" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="DangLyThuyet" class="control-label font-weight-bold"></label>
+                    <select asp-for="DangLyThuyet" class="form-control" asp-items="ViewBag.DangLyThuyet"></select>
+                    <span asp-validation-for="DangLyThuyet" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="DangThucHanh" class="control-label font-weight-bold"></label>
+                    <select asp-for="DangThucHanh" class="form-control" asp-items="ViewBag.DangThucHanh"></select>
+                    <span asp-validation-for="DangThucHanh" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 custom-control custom-switch checkbox">
+                    <input type="checkbox" class="custom-control-input" id="CoNganHangDe" asp-for="CoNganHangDe">
+
+                    <label class="custom-control-label font-weight-bold" asp-for="CoNganHangDe" for="CoNganHangDe"></label>
+                </div>
+
+                <br />
+                <div class="col-md-12">
+                    <div class="form-group text-right float-right">
+                        <input id="Luu" type="submit" value="Lưu @ViewData["TenModel"]" class="btn btn-primary" />
+                    </div>
+                    <div class="form-group text-left float-left">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">Quay lại</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+<script type="text/javascript">
+    $('#IdKhoaCE').change(function () {
+        var selectedKhoa = $("#IdKhoaCE").val();
+        var URL = "/BoMons/GetBoMons?IdKhoa=" + selectedKhoa;
+        refreshDDL('IdBoMonCE', URL, true, 'Hãy lựa chọn bộ môn');
+    });
+     function update() {
+        var SoTinChi = $('#SoTinChi').val();
+        var TenLoaiHocPhan = $('#IdLoaiHocPhan').find('option:selected').text();
+        var hdth1tc = $('#SoGioHuongDanTuHocCho1TinChi').val();
+        var thc1tc = $('#SoGioTuHocCho1TinChi').val();
+        var th1tc = $('#SoGioThucHanh1TinChi').val();
+        var ttdakltn = $('#SoGioThucTapDoAnKhoaLuanTotNghiepCho1TinChi').val();
+                var stlt1tc = $('#SoGioLyThuyet1TinChi').val();
+
+        if (TenLoaiHocPhan == 'Lý thuyết') {
+            $('#HuongDanTuHoc').val(SoTinChi * hdth1tc);
+            $('#SoTietThaoLuanThiNghiemThucHanh').val(0);
+            $('#SoTietLyThuyet').val(SoTinChi*stlt1tc);
+
+        }
+        else if (TenLoaiHocPhan == 'Thực hành') {
+            $('#HuongDanTuHoc').val(0);
+            $('#SoTietThaoLuanThiNghiemThucHanh').val(SoTinChi * th1tc);
+             $('#SoTietLyThuyet').val(0);
+        }
+        else if (TenLoaiHocPhan == 'Đồ án') {
+            $('#HuongDanTuHoc').val(0);
+            $('#SoTietThaoLuanThiNghiemThucHanh').val(SoTinChi * ttdakltn);
+             $('#SoTietLyThuyet').val(0);
+        }
+        $('#SoGioChuanBiTuHoc').val(SoTinChi * thc1tc);
+    }
+    $('#ThoiGianBatDau').change(function () {
+        var date = $('#ThoiGianBatDau').val();
+
+        $.ajax({
+            type: 'GET',
+            url: "/QuyDinhs/GetValues?date=" + date,
+            success: function (res) {
+                $('#SoGioTuHocCho1TinChi').val(res.soGioTuHocCho1TinChi);
+                $('#SoGioHuongDanTuHocCho1TinChi').val(res.soGioHuongDanTuHocCho1TinChi);
+                $('#SoGioThucHanh1TinChi').val(res.soGioThucHanh1TinChi);
+                $('#SoGioThucTapDoAnKhoaLuanTotNghiepCho1TinChi').val(res.soGioThucTapDoAnKhoaLuanTotNghiepCho1TinChi);
+                $('#SoGioLyThuyet1TinChi').val(res.soGioLyThuyet1TinChi);
+                update();
+            }
+        })
+    });
+   
+
+    $('#SoTinChi').change(function () {
+        update();
+
+    });
+    $('#IdLoaiHocPhan').change(function () {
+        update();
+
+    });
+</script>

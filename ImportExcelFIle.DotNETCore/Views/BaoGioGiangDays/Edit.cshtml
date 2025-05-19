@@ -1,0 +1,224 @@
+﻿@model IEnumerable<ImportExcelFIle.DotNETCore.ModelViews.ViewBaoGioGiangDayChiTiet>
+
+@{
+    ViewData["Title"] = "Sửa báo giờ giảng dạy";
+    ImportExcelFIle.DotNETCore.Models.BaoGioGiangDay BaoGioGiangDay = (ImportExcelFIle.DotNETCore.Models.BaoGioGiangDay)ViewBag.BaoGioGiangDay;
+
+}
+
+<h1>Sửa báo giờ giảng dạy</h1>
+
+<hr />
+<form asp-action="Edit" asp-controller="BaoGioGiangDays" asp-route-id="@BaoGioGiangDay.IdBaoGioGiangDay" method="post">
+    <div class="card">
+        <div class="card-header bg-success text-uppercase text-white" style="height:45px">
+            <h4>Thông tin báo giờ</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="@BaoGioGiangDay.IdBaoGioGiangDay" />
+                        <input type="hidden" asp-for="@BaoGioGiangDay.TenTepBaoGio" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.TenPhanCongGiangDay" class="control-label"></label>
+                        <input asp-for="@BaoGioGiangDay.TenPhanCongGiangDay" class="form-control" />
+                        <span asp-validation-for="@BaoGioGiangDay.TenPhanCongGiangDay" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Học kỳ Năm học:</label>
+                        <select class="form-control form-control-chosen" asp-for="@BaoGioGiangDay.IdNamHocHocKy" asp-items="ViewBag.IdNamHocHocKy">
+                            <option value="0">Hãy chọn học kỳ</option>
+                        </select>
+                        <span asp-validation-for="@BaoGioGiangDay.IdNamHocHocKy" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.ThoiGianBatDau" class="control-label"></label>
+                        <input asp-for="@BaoGioGiangDay.ThoiGianBatDau" class="form-control" />
+                        <span asp-validation-for="@BaoGioGiangDay.ThoiGianBatDau" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.ThoiGianKetThuc" class="control-label"></label>
+                        <input asp-for="@BaoGioGiangDay.ThoiGianKetThuc" class="form-control" />
+                        <span asp-validation-for="@BaoGioGiangDay.ThoiGianKetThuc" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="@BaoGioGiangDay.TenTepBaoGio" class="control-label"></label>
+                        <button type="submit" class="page-link" asp-route-id="@BaoGioGiangDay.IdBaoGioGiangDay" asp-action="Download" asp-controller="BaoGioGiangDays">@BaoGioGiangDay.TenTepBaoGio</button>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary ">Cập nhật báo giờ</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+<form asp-action="Edit" asp-controller="BaoGioGiangDays" asp-route-id="@BaoGioGiangDay.IdBaoGioGiangDay" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <dl class="dl-horizontal">
+        <dt>
+            <button class="btn @(ViewData["Filtering"])" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                Lọc & Tìm kiếm
+            </button>
+        </dt>
+        <dd>
+            <div class="form-horizontal">
+                <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilter">
+                    <div class="form-row">
+                        <div class="form-group col-md-4 ml-md-3">
+                            <label class="control-label">Khoa:</label>
+                            <select id="IdKhoa" name="IdKhoa" class="form-control" asp-items="ViewBag.IdKhoa"></select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Tên học phần:</label>
+                            @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3 align-self-end">
+                            <input type="submit" name="actionButton" value="Lọc" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dd>
+        <dt>
+        </dt>
+        <dd>
+            <div>
+                <table class="table">
+                    <tr>
+                        <th>
+                            <label class="control-label">STT</label>
+                        </th>
+                        <th>
+                            <label class="control-label">Mã học phần</label>
+                        </th>
+                        <th>
+                            <label class="control-label">Tên lớp học phần</label>
+                        </th>
+                        <th>
+                            <label class="control-label">Số tín chỉ</label>
+                        </th>
+                        <th>
+                            <label class="control-label">Sĩ số</label>
+                        </th>
+                        <th>
+                            <label class="control-label">Số tiết</label>
+                        </th>
+                        <th>
+                            <label class="control-label">Số nhóm</label>
+                        </th>
+                        <th>
+                            <label class="control-label">Số tiết học và nhóm</label>
+                        </th>
+                        <th>
+                            <label class="control-label">HDTH</label>
+                        </th>
+                        <th>
+                            <input type="submit" name="actionButton" value="Mã khoa" class="btn btn-link" />
+                        </th>
+                        <th>
+                            <label class="control-label">Ghi chú</label>
+                        </th>
+                        <th class="text-center">
+                            <a href="#" data-toggle="tooltip" title="Thêm lớp học phần" class="btn btn-primary btn-sm fontawesome text-white" onclick="showInPopup('@Url.Action("CreateOrEdit","BaoGioGiangDayChiTiets",new {Id = 0,IdBaoGioGiangDay = @BaoGioGiangDay.IdBaoGioGiangDay},Context.Request.Scheme)','Thêm lớp học phần')"><i class="fas fa-plus"></i></a>
+                        </th>
+                    </tr>
+                    @{
+                        var i = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <label>@i</label>
+                            </td>
+                            @{
+                                i += 1;
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaHocPhan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TenLopHocPhan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SoTinChi)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SiSo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SoTietLyThuyet)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SoNhom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SoTietThaoLuanThiNghiemThucHanh)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HuongDanTuHoc)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IdKhoa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GhiChu)
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <div>
+                                        <a data-toggle="tooltip" title="Sửa lớp học phần" href="#" class="btn btn-info btn-sm fontawesome text-white" onclick="showInPopup('@Url.Action("CreateOrEdit","BaoGioGiangDayChiTiets",new {Id=@item.IdBaoGioGiangDayChiTiet,IdBaoGioGiangDay = @BaoGioGiangDay.IdBaoGioGiangDay},Context.Request.Scheme)','Sửa lớp học phần')"><i class="fas fa-pencil-alt"></i></a>
+                                    </div> &nbsp;|&nbsp;
+                                    <div>
+                                            <button  asp-action="Delete" asp-controller="BaoGioGiangDayChiTiets" asp-route-id="@item.IdBaoGioGiangDayChiTiet" data-toggle="tooltip" title="Xóa lớp học phần" type="submit" class="btn btn-danger btn-sm fontawesome" onclick='return jQueryAjaxDeleteButton(this,"Xác nhận muốn xóa báo giờ giảng dạy chi tiết này không?")'><i class="far fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                            Số lớp:
+                        </td>
+                        <td>
+                            <strong>@ViewData["SoMon"] / @ViewData["TongSoMon"]</strong>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+            </div>
+        </dd>
+    </dl>
+    <partial name="_PagingNavBar" />
+    <div class="row">
+        <a class="btn btn-secondary" asp-controller="Trainning" asp-action="Index" asp-route-Tab="BaoGioGiangDaysTab">Quay lại</a>
+    </div>
+</form>
+<style>
+    .custom {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+</style>

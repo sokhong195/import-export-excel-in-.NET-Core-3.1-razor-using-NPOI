@@ -1,0 +1,144 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.Khoa
+@{
+ViewData["Title"] = "Create Khoa";
+    Layout = null;
+}
+            <form asp-action="Create" id="frmKhoaBoMon">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="IdKhoa" class="control-label"></label>
+                            <input asp-for="IdKhoa" class="form-control" />
+                            <span asp-validation-for="IdKhoa" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="TenKhoa" class="control-label"></label>
+                            <input asp-for="TenKhoa" class="form-control" />
+                            <span asp-validation-for="TenKhoa" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ThoiGianBatDau" class="control-label"></label>
+                            <input asp-for="ThoiGianBatDau" class="form-control" />
+                            <span asp-validation-for="ThoiGianBatDau" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ThoiGianKetThuc" class="control-label"></label>
+                            <input asp-for="ThoiGianKetThuc" class="form-control" />
+                            <span asp-validation-for="ThoiGianKetThuc" class="text-danger"></span>
+                        </div>
+                    </div>
+   
+                    <div class="col-md-12">
+                        <table class="table table-striped table-sm" id="detailsTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Tên bộ môn
+                                    </th>
+                                    <th>
+                                        Thời gian bắt đầu
+                                    </th>
+                                    <th>
+                                        Thời gian kết thúc
+                                    </th>
+                                    <th>
+                                        <button id="addToList" type="button" class="btn btn-sm btn-secondary visible">
+                                            Thêm bộ môn
+                                        </button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12 btn-group">
+                        <div class=" form-group text-right p-2">
+                            <input id="Luu" type="submit" value="Lưu Khoa" class="btn btn-primary" />
+                        </div>
+                        <div class=" form-group text-left p-2">
+                            <a class="btn btn-secondary" asp-action="Index">Quay lại Danh sách Khoa</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <script type="text/javascript">
+    //Thêm mới khóa
+           $("#addToList").click(function (e) {
+                                e.preventDefault();
+                                var trBoMon = "<tr>";
+                                trBoMon += "<td> <input class='form-control text-box single-line valid' data-val='true'  type='text' value='Chưa có' ></td>";
+                                trBoMon += "<td><input class='form-control text-box single-line' data-val='true'  type='date' value='@DateTime.Now.ToString("yyyy-MM-dd")'></td>";
+                                trBoMon += "<td><input class='form-control text-box single-line' data-val='true'  type='date'></td>";
+                                trBoMon += "<td><a data-itemId='0' href='#' class='deleteItem btn btn-danger'>Remove</a></td>";
+                                trBoMon += "</tr>";
+                                detailsTableBody = $("#detailsTable tbody");
+                                detailsTableBody.append(trBoMon);
+                            });
+
+                            // After Add A New Order In The List, If You Want, You Can Remove It.
+                            $(document).on('click', 'a.deleteItem', function (e) {
+                                e.preventDefault();
+                                var $self = $(this);
+                                if ($(this).attr('data-itemId') == "0") {
+                                    $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                                        $(this).remove();
+                                    });
+                                }
+                            });
+                            //After Click Save Button Pass All Data View To Controller For Save Database
+                            function saveOrder(data) {
+                                return $.ajax({
+                                    contentType: 'application/json; charset=utf-8',
+                                    dataType: 'json',
+                                    type: 'POST',
+                                    url: "/Khoas/Create",
+                                    data: data,
+                                    success: function (result) {
+                                        alert(result);
+                                        location.reload();
+                                    },
+                                    error: function () {
+                                        alert("Error!")
+                                    }
+                                });
+                            }
+            $("#Luu").click(function (e) {
+                e.preventDefault();
+                var arrBoMon = [];
+                arrBoMon.length = 0;
+
+                $.each($("#detailsTable tbody tr"), function () {
+
+                    arrBoMon.push({
+                        TenBoMon: $(this).find('td:eq(0)').find('input:eq(0)').val(),
+                        ThoiGianBatDau: $(this).find('td:eq(1)').find('input:eq(0)').val(),
+                        ThoiGianKetThuc: $(this).find('td:eq(2)').find('input:eq(0)').val(),
+                    });
+                });
+
+                var data = JSON.stringify({
+                    IdKhoa: $("#IdKhoa").val(),
+                    TenKhoa: $("#TenKhoa").val(),
+                    BoMons: arrBoMon,
+                    ThoiGianBatDau: $("#ThoiGianBatDau").val(),
+                    ThoiGianKetThuc: $("#ThoiGianKetThuc").val(),
+                });
+
+                $.when(saveOrder(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            });
+
+                        // Kết thúc thêm mói khoa
+            </script>
+
+

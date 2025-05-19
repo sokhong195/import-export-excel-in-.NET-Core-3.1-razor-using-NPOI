@@ -6,6 +6,10 @@
     <title>@ViewData["Title"] - ImportExcelFIle.DotNETCore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link href="~/css/component-chosen.css" rel="stylesheet" />
+    <link href="~/css/select2.min.css" rel="stylesheet" />
+    <link href="~/css/tagify.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -24,6 +28,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="HocPhans" asp-action="Index">Quản lý học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Khoas" asp-action="Index">Quản lý Khoa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Trainning" asp-action="Index">Quản lý Đào tạo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PhanCongGiangDays" asp-action="Index">Phân công giảng dạy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="QuanTris" asp-controller="QuanTris" asp-action="Index">Quản trị dữ liệu</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -34,7 +53,24 @@
             @RenderBody()
         </main>
     </div>
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="form-modal" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loaderbody" id="loaderbody">
+        <div class="loader"></div>
+    </div>
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - ImportExcelFIle.DotNETCore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -42,7 +78,23 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>*@
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/select2.min.js"></script>
+    <script src="~/js/jQuery.tagify.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/notify.min.js"></script>
+    <script src="~/js/refreshDDL.js"></script>
+    <script src="~/js/chosen.jquery.js"></script>
+    <script src="~/js/chosen.proto.js"></script>
+
     @RenderSection("Scripts", required: false)
+    @if (TempData["msg"] != null)
+    {
+        <script type="text/javascript">
+        @Html.Raw(TempData["msg"])
+        </script>
+    }
 </body>
 </html>

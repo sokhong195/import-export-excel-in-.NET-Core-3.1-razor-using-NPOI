@@ -1,0 +1,58 @@
+﻿@model ImportExcelFIle.DotNETCore.Models.QuyDinhGioChuanThucHanh
+
+@{
+    ViewData["Model"] = "Quy định giờ chuẩn thực hành";
+    ViewData["Controller"] = "QuyDinhGioChuanThucHanhs";
+    Layout = null;
+}
+<form asp-action="CreateOrEdit" asp-route-id="@Model.IdQuyDinhGioChuanThucHanh" onsubmit="return jQueryAjaxPost(this);">
+    <div class="row col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="IdQuyDinhGioChuanThucHanh" />
+        <div class="col-md-6 form-group">
+            <label asp-for="TenNoiDungGiangDay" class="control-label font-weight-bold"></label>
+            <select asp-for="TenNoiDungGiangDay" class="form-control" asp-items="ViewBag.NoiDungThucHanh"></select>
+            <span asp-validation-for="TenNoiDungGiangDay" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="IdKhoa" class="control-label"></label>
+            <select asp-for="IdKhoa" class="form-control" asp-items="ViewBag.IdKhoa"></select>
+            <span asp-validation-for="IdKhoa" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="CanDuoi" class="control-label font-weight-bold"></label>
+            <input asp-for="CanDuoi" class="form-control" />
+            <span asp-validation-for="CanDuoi" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="CanTren" class="control-label font-weight-bold"></label>
+            <input asp-for="CanTren" class="form-control" />
+            <span asp-validation-for="CanTren" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="SoGioChuan" class="control-label font-weight-bold"></label>
+            <input asp-for="SoGioChuan" class="form-control" />
+            <span asp-validation-for="SoGioChuan" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="ThoiGianBatDau" class="control-label font-weight-bold"></label>
+            <input asp-format="{0:yyyy-MM-dd}" asp-for="ThoiGianBatDau" class="form-control" />
+            <span asp-validation-for="ThoiGianBatDau" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="ThoiGianKetThuc" class="control-label font-weight-bold"></label>
+            <input asp-format="{0:yyyy-MM-dd}" asp-for="ThoiGianKetThuc" class="form-control" />
+            <span asp-validation-for="ThoiGianKetThuc" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group text-right float-right">
+            <input id="Luu" type="submit" value="Lưu @ViewData["Model"]" class="btn btn-primary" />
+        </div>
+        <div class="form-group text-left float-left">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">Quay lại</span>
+            </button>
+        </div>
+    </div>
+</form>

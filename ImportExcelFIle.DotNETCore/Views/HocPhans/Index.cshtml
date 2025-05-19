@@ -1,0 +1,220 @@
+﻿@model IEnumerable<ImportExcelFIle.DotNETCore.ModelViews.ViewHocPhan>
+
+@{
+    ViewData["Title"] = "Quản lý danh sách học phần";
+    ViewData["Model"] = "Học phần";
+    ViewData["Controller"] = "HocPhan" + "s";
+}
+
+<div id="view-all">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title float-left" style="margin-left:10px;">
+                <strong>Danh sách @ViewData["Model"]</strong>
+            </h2>
+            <button style="margin-left:10px;" class="btn btn-primary float-right" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilterFile" aria-expanded="true" aria-controls="collapseFilter">
+                <i class="fas fa-file-import"></i> Thêm học phần từ tệp
+            </button>
+            <a href="#" onclick="showInPopup('@Url.Action("CreateOrEdit", ""+@ViewData["Controller"], null, Context.Request.Scheme)','Thêm @ViewData["Model"] mới')" class="btn btn-success text-white float-lg-right"><i class="fas fa-random"></i> Thêm @ViewData["Model"] mới</a> &nbsp;
+        </div>
+        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        <dl class="dl-horizontal">
+            <dd>
+                <form asp-action="CreateFromFile" enctype="multipart/form-data" asp-controller="HocPhans" method="post">
+                  
+                    <div class="form-horizontal">
+                        <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilterFile">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input id="theFile" name="theFile" type="file" class="custom-file-input">
+                                    <label for="theFile" class="custom-file-label text-truncate">Tải tập tin excel (.xlsx)...</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-warning" id="btnupload">Tải tập tin</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </dd>
+
+        </dl>
+
+        <form asp-action="Index" asp-controller="@ViewData["Controller"]" method="get">
+            <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+            <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+            <dl class="dl-horizontal">
+                <dt>
+                    <button class="btn @(ViewData["Filtering"])" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                        Lọc & Tìm kiếm
+                    </button>
+                </dt>
+                <dd>
+                    <div class="form-horizontal">
+                        <div class="collapse card card-body bg-light" style="padding-top: 10px; padding-bottom: 0px;" id="collapseFilter">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label class="control-label font-weight-bold">Danh sách khoa</label>
+                                    <select id="IdKhoa" name="IdKhoa" class="form-control" asp-items="ViewBag.IdKhoa">
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">Bộ môn:</label>
+                                    <select id="IdBoMon" class="form-control" asp-items="ViewBag.IdBoMon"></select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">Tên học phần:</label>
+                                    @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <button name="actionButton" class="btn btn-primary  float-right" type="submit"><i class="fas fa-filter"></i> Lọc danh sách khoa</button>
+                                    <a asp-action="Index" class="btn btn-outline-dark ">Bỏ lọc</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </dd>
+                <dd>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MaHocPhan)
+                                </th>
+                                <th>
+                                    <button name="actionButton" value="Tên học phần" class="btn btn-link" type="submit">
+                                        @Html.DisplayNameFor(model => model.TenHocPhan)
+                                        @if (ViewData["sortDirection"].ToString() == "")
+                                        {
+                                            <i class="fas fa-sort"></i>
+                                        }
+                                        else
+                                        {
+                                            if (ViewData["sortDirection"].ToString() == "asc")
+                                            {
+                                                <i class="fas fa-sort-amount-up-alt"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-sort-amount-up"></i>
+                                            }
+                                        }
+                                    </button>
+                                </th>
+                                <th>
+                                    Thông tin số giờ
+                                </th>
+                                <th>
+                                    Thông tin thi
+                                </th>
+
+                                @if (TempData["HocPhans"] == null)
+                                {
+                                    <th class="removeBorder"></th>
+                                    <th class="text-center removeBorder">
+                                        <input data-toggle="tooltip" data-placement="top" title="Chọn tất cả" type="checkbox" id="checkBoxAll" class="form-check form-check-inline" />
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @{
+                                                var details = "<b>" + Html.DisplayNameFor(model => model.TenKhoa) + ": " + "</b>" + item.TenKhoa + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.TenBoMon) + ": " + "</b>" + item.TenBoMon + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.TenTrinhDo) + ": " + "</b>" + item.TenTrinhDo + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.TenLoaiHocPhan) + ": " + "</b>" + item.TenLoaiHocPhan + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.ThuocHocKy) + ": " + "</b>" + item.ThuocHocKy;
+                                                var shortcut = item.MaHocPhan;
+
+                                            }
+                                            <a tabindex="0" class="i" role="button" data-toggle="popover" data-html="true"
+                                               data-trigger="hover" title="Thông tin học phần" data-placement="bottom" data-content="@details">@shortcut </a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TenHocPhan)
+                                        </td>
+                                        <td>
+                                            @{
+                                                var details1 = "<b>" + Html.DisplayNameFor(model => model.SoTinChi) + ": " + "</b>" + item.SoTinChi + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.SoTietLyThuyet) + ": " + "</b>" + item.SoTietLyThuyet + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.SoTietThaoLuanThiNghiemThucHanh) + ": " + "</b>" + item.SoTietThaoLuanThiNghiemThucHanh + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.SoGioChuanBiTuHoc) + ": " + "</b>" + item.SoGioChuanBiTuHoc + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.HuongDanTuHoc) + ": " + "</b>" + item.HuongDanTuHoc;
+                                                var shortcut1 = item.SoTinChi + "(" + item.SoTietLyThuyet + ", " + item.SoTietThaoLuanThiNghiemThucHanh + ", " + item.SoGioChuanBiTuHoc + ", " + item.HuongDanTuHoc + ")";
+
+                                            }
+                                            <a tabindex="0" class="" role="button" data-toggle="popover" data-html="true"
+                                               data-trigger="hover" title="Thông tin số giờ" data-placement="bottom" data-content="@details1">@shortcut1 </a>
+                                        </td>
+                                        <td>
+                                            @{
+                                                var details2 = "<b>" + Html.DisplayNameFor(model => model.TenHinhThucThi) + ": " + "</b>" + item.TenHinhThucThi + "<br />" +
+                                                              "<b>" + Html.DisplayNameFor(model => model.CoNganHangDe) + ": " + "</b>" + (item.CoNganHangDe == true ? "Có" : "Không") + "<br />" +
+"<b>" + Html.DisplayNameFor(model => model.ThoiGianThi) + ": " + "</b>" + item.ThoiGianThi + "<br />";
+                                                var shortcut2 = item.TenHinhThucThi;
+
+                                            }
+                                            <a tabindex="0" class="" role="button" data-toggle="popover" data-html="true"
+                                               data-trigger="hover" title="Thông tin thi" data-placement="bottom" data-content="@details2">@shortcut2 </a>
+                                        </td>
+                                        @if (TempData["HocPhans"] == null)
+                                        {
+                                            <td class="removeBorder">
+                                                <a href="#" data-toggle="tooltip" title="Sửa @ViewData["Model"]" onclick="showInPopup('@Url.Action("CreateOrEdit", "" + @ViewData["Controller"], new { Id = item.IdHocPhan }, Context.Request.Scheme)','Sửa @ViewData["Model"]')" class="btn btn-info btn-sm fontawesome"><i class="fas fa-pencil-alt"></i></a>
+                                            </td>
+                                            <td class="text-center removeBorder">
+                                                <input data-toggle="tooltip" name="cbbIsDelete" value="@item.IdHocPhan" data-placement="top" title="Xóa học @ViewData["Model"]" type="checkbox" class="form-check form-check-inline chkCheckBoxId" />
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                        </tbody>
+                        @{ var i = (Model == null) ? 0 : Model.Count();}
+                        <tfoot align="right">
+                            <tr>
+                                <td colspan="6">
+                                    <strong class="float-left">Số học phần: @i/@ViewData["TotalOfRecord"]</strong>
+                                    @if (TempData["HocPhans"] == null)
+                                    {
+                                        <button asp-action="DownLoad" type="submit" class="btn btn-secondary text-white btn-sm fontawesome"><i class="fas fa-file-download"></i> Xuất các học phần</button>
+                                          <a style="margin-left:10px;"  class="btn btn-danger text-white btn-sm fontawesome float-right" onclick="return jQueryAjaxDeleteAll('@Url.Action("DeleteAll", "" + @ViewData["Controller"], null, Context.Request.Scheme)','Xác nhận xóa các @ViewData["Model"]' );"><i class="far fa-trash-alt"></i> Xóa các học phần</a>
+                                    }
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </dd>
+            </dl>
+            <partial name="_PagingNavBar" />
+            @if (TempData["HocPhans"] != null)
+            {
+                <div class="row">
+                    <a class="btn btn-secondary" asp-controller="HocPhans" asp-action="Index">Quay lại</a>
+                    &nbsp;&nbsp;<a class="btn btn-success" asp-controller="HocPhans" asp-action="SaveFromFile">Lưu các @ViewData["Model"]</a>
+                </div>
+                TempData["HocPhans"] = TempData["HocPhans"];
+            }
+
+        </form>
+    </div>
+</div>
+<style>
+    .removeBorder {
+        padding-left: 0px;
+        padding-right: 0px;
+        width: 50px;
+    }
+</style>
+@if (TempData["msg"] != null)
+{
+    <script type="text/javascript">
+            @Html.Raw(TempData["msg"])
+    </script>
+}
